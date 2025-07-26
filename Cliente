@@ -29,3 +29,4 @@ public class Cliente {
     public String toString() {
         return "Cliente: " + nombre + ", Placa: " + placaVehiculo;
     }
+}
