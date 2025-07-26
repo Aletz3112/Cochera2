@@ -1,0 +1,87 @@
+import java.util.ArrayList;
+
+public class Gestor {
+
+    private ArrayList<Factura> facturas;
+    private Servicio[] serviciosDisponibles;
+
+    // Constructor
+    public Gestor() {
+        this.facturas = new ArrayList<>();
+        this.serviciosDisponibles = new Servicio[]{
+            new Servicio("Estacionamiento", 50),
+            new Servicio("Mantenimiento Basico", 100),
+            new Servicio("Lavado y Limpieza", 75)
+        };
+    }
+
+    // Método para mostrar los servicios disponibles
+    public void mostrarServiciosDisponibles() {
+        System.out.println("Servicios disponibles:");
+        for (int i = 0; i < serviciosDisponibles.length; i++) {
+            System.out.println((i + 1) + ". " + serviciosDisponibles[i]);
+        }
+    }
+
+    // Método para seleccionar servicios
+    public Servicio[] seleccionarServicios(String opcionesSeleccionadas) {
+        String[] opciones = opcionesSeleccionadas.split(",");
+        Servicio[] serviciosSeleccionados = new Servicio[opciones.length];
+        for (int i = 0; i < opciones.length; i++) {
+            int indice = Integer.parseInt(opciones[i].trim()) - 1;
+            serviciosSeleccionados[i] = serviciosDisponibles[indice];
+        }
+        return serviciosSeleccionados;
+    }
+
+    // Metodo para registrar un cliente y generar su factura
+    public Factura registrarCliente(String nombreCliente, String placaVehiculo, Servicio[] serviciosSeleccionados) {
+        Cliente cliente = new Cliente(nombreCliente, placaVehiculo);
+        Factura factura = new Factura(cliente, serviciosSeleccionados);
+        facturas.add(factura);
+        return factura;
+    }
+
+    // Metodo para mostrar todas las facturas generadas
+    public void mostrarFacturas() {
+        if (facturas.isEmpty()) {
+            System.out.println("No hay facturas registradas.");
+        } else {
+            System.out.println("Facturas generadas:");
+            for (Factura factura : facturas) {
+                System.out.println(factura);
+            }
+        }
+    }
+
+    // Metodo para generar el reporte HTML
+    public String generarReporteHTML() {
+        StringBuilder html = new StringBuilder("<html><body><h1>Reporte Diario</h1>");
+        for (Factura factura : facturas) {
+            html.append(factura.generarReporteHTML());
+        }
+        html.append("</body></html>");
+        return html.toString();
+    }
+
+    // Metodo para generar el reporte CSV
+    public String generarReporteCSV() {
+        StringBuilder csv = new StringBuilder("Cliente,Placa,Fecha,Servicio,Precio\n");
+        for (Factura factura : facturas) {
+            // Agregar datos de cada factura
+            csv.append(factura.generarDatosCSV());
+        }
+        return csv.toString();
+    }
+
+    // Metodo para guardar los reportes en archivos
+    public void guardarReportes() {
+        try {
+            java.nio.file.Files.write(java.nio.file.Paths.get("reporte.html"), generarReporteHTML().getBytes());
+            java.nio.file.Files.write(java.nio.file.Paths.get("reporte.csv"), generarReporteCSV().getBytes());
+            System.out.println("Reportes guardados exitosamente.");
+        } catch (Exception e) {
+            System.out.println("Error al guardar los reportes: " + e.getMessage());
+        }
+    }
+}
