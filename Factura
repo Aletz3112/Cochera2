@@ -1,0 +1,31 @@
+public class Cliente {
+    private String nombre;
+    private String placaVehiculo;
+
+    // Constructor
+    public Cliente(String nombre, String placaVehiculo) {
+        this.nombre = nombre;
+        this.placaVehiculo = placaVehiculo;
+    }
+
+    // Getters y Setters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getPlacaVehiculo() {
+        return placaVehiculo;
+    }
+
+    public void setPlacaVehiculo(String placaVehiculo) {
+        this.placaVehiculo = placaVehiculo;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente: " + nombre + ", Placa: " + placaVehiculo;
+    }
