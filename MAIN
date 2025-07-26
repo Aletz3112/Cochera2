@@ -1,0 +1,62 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Gestor gestor = new Gestor();
+        int opcion;
+
+        do {
+            // Mostrar el menú
+            System.out.println("\n--- MENU PRINCIPAL ---");
+            System.out.println("1. Registrar cliente y generar factura");
+            System.out.println("2. Ver facturas generadas");
+            System.out.println("3. Generar reportes del dia");
+            System.out.println("4. Salir");
+            System.out.print("Seleccione una opcion: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer
+
+            switch (opcion) {
+                case 1:
+                    // Registrar cliente y generar factura
+                    System.out.print("Ingrese nombre del cliente: ");
+                    String nombreCliente = scanner.nextLine();
+                    System.out.print("Ingrese placa del vehiculo: ");
+                    String placaVehiculo = scanner.nextLine();
+
+                    // Mostrar servicios disponibles
+                    gestor.mostrarServiciosDisponibles();
+
+                    System.out.print("Seleccione servicios (ingrese numeros separados por comas): ");
+                    String opcionesSeleccionadas = scanner.nextLine();
+
+                    // Registrar cliente y generar factura
+                    Servicio[] serviciosSeleccionados = gestor.seleccionarServicios(opcionesSeleccionadas);
+                    Factura factura = gestor.registrarCliente(nombreCliente, placaVehiculo, serviciosSeleccionados);
+
+                    System.out.println("Factura generada: " + factura);
+                    break;
+
+                case 2:
+                    // Ver facturas generadas
+                    gestor.mostrarFacturas();
+                    break;
+
+                case 3:
+                    // Generar reportes del dia
+                    System.out.println("Generando reportes del dia...");
+                    gestor.guardarReportes();
+                    break;
+
+                case 4:
+                    // Salir del programa
+                    System.out.println("Saliendo del programa. ¡Hasta luego!");
+                    break;
+
+                default:
+                    System.out.println("Opcion invalida. Intente nuevamente.");
+            }
+        } while (opcion != 4);
+
+        scanner.close();
